@@ -1,4 +1,4 @@
-activity_main.xml
+acitivity main
 
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -35,64 +35,106 @@ activity_main.xml
 </LinearLayout>
 
 
-
-mainactivity.java
+welcomeactitivity.java
 
 package com.example.welcompage;
+
 import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.*;
-public class MainActivity extends AppCompatActivity {
-    EditText etUsername, etPassword;
-    Button btnLogin;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        etUsername = findViewById(R.id.etUsername);
-        etPassword = findViewById(R.id.etPassword);
-        btnLogin = findViewById(R.id.btnLogin);
-        btnLogin.setOnClickListener(v-> {
-            String user = etUsername.getText().toString().trim
-                    ();
-            String pass = etPassword.getText().toString().trim
-                    ();
-            if (user.equals("admin") && pass.equals("1234")) {
-                // Move to WelcomeActivity after successfullogin
-                Intent i = new Intent(MainActivity.this, com.example.welcompage.WelcomeActivity.class);
-                i.putExtra("username", user);
-                startActivity(i);
-            } else {
-                Toast.makeText(MainActivity.this,
-                                "Invalid Credentials", Toast.LENGTH_SHORT)
-                        .show();
-            }
-    });
-}
-}
-
-welcomactivity.java
-
-package com.example.welcompage;
-import androidx.appcompat.app.AppCompatActivity;
-  import android.os.Bundle;
-  import android.widget.TextView;
+import android.widget.TextView;
 
 public class WelcomeActivity extends AppCompatActivity {
+
     TextView textWelcome;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        textWelcome = findViewById(R.id.textWelcome);
-        // Get username from Intent
-        String username = getIntent().getStringExtra("username ");
-                textWelcome.setText("Welcome," + username + "!");
-    }
- }
 
-activity_welcome.xml
+        textWelcome = findViewById(R.id.textWelcome);
+
+        // Get username from Intent
+        String username = getIntent().getStringExtra("username");
+        if (username == null || username.isEmpty()) {
+            username = "Guest";
+        }
+
+        textWelcome.setText("Welcome, " + username+"!");
+}
+}
+
+
+mainactivity.java
+
+package com.example.welcompage;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText etUsername, etPassword;
+    Button btnLogin;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        etUsername = findViewById(R.id.etUsername);
+        etPassword = findViewById(R.id.etPassword);
+        btnLogin = findViewById(R.id.btnLogin);
+
+        btnLogin.setOnClickListener(v -> {
+            String user = etUsername.getText().toString().trim();
+            String pass = etPassword.getText().toString().trim();
+
+            if (user.equals("admin") && pass.equals("1234")) {
+                // Move to WelcomeActivity after successful login
+                Intent i = new Intent(MainActivity.this, WelcomeActivity.class);
+                i.putExtra("username", user);
+                startActivity(i);
+            } else {
+                Toast.makeText(MainActivity.this,
+                        "Invalid Credentials", Toast.LENGTH_SHORT).show();
+            }
+   });
+}
+}
+
+
+manifest
+
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.welcompage">
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Welcompage">
+
+        <activity android:name=".WelcomeActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+</manifest>
+
+acitvitywelcome
+
 
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -100,6 +142,7 @@ activity_welcome.xml
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
+
     <TextView
         android:id="@+id/textWelcome"
         android:text="Welcome!"
@@ -107,4 +150,5 @@ activity_welcome.xml
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
 </LinearLayout>
